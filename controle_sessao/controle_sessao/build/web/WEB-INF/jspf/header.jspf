@@ -1,0 +1,60 @@
+<%@page import="java.util.Collections"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="java.util.List"%>
+<%@ page pageEncoding="UTF-8" %>
+<%
+    if(request.getParameter("logon")!=null){
+        String username = request.getParameter("username");
+        session.setAttribute("username", username);
+        response.sendRedirect(request.getRequestURI());
+    }
+    if(request.getParameter("logoff")!=null){
+        session.removeAttribute("username");
+        response.sendRedirect(request.getRequestURI());
+    }
+    int sessionCounter = 0; 
+
+    if (session.getAttribute("counter") != null) {
+    sessionCounter = (int) session.getAttribute("counter"); 
+    session.setAttribute("counter", sessionCounter +1);
+    }
+    
+    List<Integer> lista = new ArrayList(); 
+    ArrayList sessionNumbers = new ArrayList(); 
+
+    String numbers = "";
+
+    if (sessionCounter <=1) {
+    for (int x = 1; x < 61; x++) {
+    lista.add(x); 
+    }
+    Collections.shuffle(lista);
+    session.setAttribute(numbers, lista);
+    }
+
+    sessionNumbers = (ArrayList)session.getAttribute(numbers);
+
+        String username = (String)
+        session.getAttribute("username");
+        
+        if(request.getParameter("logon")!=null){
+        session.setAttribute("username",request.getParameter("username"));
+        session.setAttribute("counter",0);
+        
+        }
+       
+%>
+
+<h1>FernandaApp</h1>
+<%if(session.getAttribute("username")!=null){%>
+    
+    <form>
+       <a href="index.jsp">ÍNDICE</a> |
+        <a href="about.jsp">PÁGINA 1</a> |
+        
+        Bem vindo, <b><%= session.getAttribute("username") %></b>
+        <input type="submit" name="logoff" value="Sair"/>
+        
+    </form>
+<%}%>
+<hr/>
